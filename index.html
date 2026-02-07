@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toastmasters Timer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Mobile Menu Toggle -->
+<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+    <span></span><span></span><span></span>
+</button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-container">
+
+    <!-- ========== Sidebar ========== -->
+    <aside class="sidebar" id="sidebar">
+        <h2>Navigation</h2>
+        <select id="pageSelect" onchange="switchPage(this.value)">
+            <option value="timer">Timer</option>
+            <option value="results">Results</option>
+            <option value="about">About</option>
+        </select>
+
+        <hr class="sidebar-divider">
+
+        <!-- Timer sidebar content -->
+        <div id="sidebarTimer">
+            <h2>Presets</h2>
+            <div class="radio-group" id="presetGroup"></div>
+        </div>
+
+        <!-- Results sidebar content -->
+        <div id="sidebarResults" style="display:none;">
+            <h2>Categories</h2>
+            <div class="radio-group" id="resultsCategoryGroup"></div>
+        </div>
+    </aside>
+
+    <!-- ========== Main Content ========== -->
+    <main class="main-content">
+
+        <!-- ===== TIMER PAGE ===== -->
+        <div class="page active" id="page-timer">
+            <h1>Toastmasters Timer</h1>
+
+            <!-- Threshold Inputs -->
+            <div class="time-inputs">
+                <div class="input-group">
+                    <label>🟢 Green</label>
+                    <div class="time-pair">
+                        <input type="number" id="green-min" min="0" onchange="onThresholdChange()">
+                        <span class="time-separator">:</span>
+                        <input type="number" id="green-sec" min="0" max="59" onchange="onThresholdChange()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>🟡 Yellow</label>
+                    <div class="time-pair">
+                        <input type="number" id="yellow-min" min="0" onchange="onThresholdChange()">
+                        <span class="time-separator">:</span>
+                        <input type="number" id="yellow-sec" min="0" max="59" onchange="onThresholdChange()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>🔴 Red</label>
+                    <div class="time-pair">
+                        <input type="number" id="red-min" min="0" onchange="onThresholdChange()">
+                        <span class="time-separator">:</span>
+                        <input type="number" id="red-sec" min="0" max="59" onchange="onThresholdChange()">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>❌ Disqualify</label>
+                    <div class="time-pair">
+                        <input type="number" id="dq-min" min="0" onchange="onThresholdChange()">
+                        <span class="time-separator">:</span>
+                        <input type="number" id="dq-sec" min="0" max="59" onchange="onThresholdChange()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Speaker & Category -->
+            <div class="speaker-row">
+                <div class="input-group">
+                    <label>Speaker Name</label>
+                    <input type="text" id="speakerName" placeholder="Enter speaker name...">
+                </div>
+                <div class="input-group" id="customCategoryGroup" style="display:none;">
+                    <label>Save to Category</label>
+                    <select id="customCategory">
+                        <option value="Speech">Speech</option>
+                        <option value="Table Topics">Table Topics</option>
+                        <option value="Evaluation">Evaluation</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Timer Display -->
+            <div class="timer-header">
+                <div class="timer-display" id="timerDisplay">
+                    00:00
+                    <button class="btn-toggle" id="btnToggle" onclick="toggleHide()">🙈 Hide</button>
+                </div>
+            </div>
+
+            <!-- Controls (Top) -->
+            <div class="button-row">
+                <button class="btn btn-start" onclick="startTimer()">▶ Start</button>
+                <button class="btn btn-pause" onclick="pauseTimer()">⏸ Pause</button>
+                <button class="btn btn-reset" onclick="resetTimer()">↺ Reset</button>
+            </div>
+
+            <!-- Save Button (Top) -->
+            <div class="save-container hidden" id="saveContainer">
+                <button class="btn btn-save" onclick="saveTime()">💾 Save Time</button>
+            </div>
+
+            <!-- Open Display Window -->
+            <div class="display-row">
+                <button class="btn btn-display" onclick="openDisplayWindow()" style="width:100%;">↗ Open Display Window</button>
+            </div>
+
+            <!-- Timer Card -->
+            <div class="timer-card" id="timerCard"></div>
+
+            <!-- Controls (Bottom) -->
+            <div class="button-row">
+                <button class="btn btn-start" onclick="startTimer()">▶ Start</button>
+                <button class="btn btn-pause" onclick="pauseTimer()">⏸ Pause</button>
+                <button class="btn btn-reset" onclick="resetTimer()">↺ Reset</button>
+            </div>
+
+            <!-- Save Button (Bottom) -->
+            <div class="save-container hidden" id="saveContainer2">
+                <button class="btn btn-save" onclick="saveTime()">💾 Save Time</button>
+            </div>
+
+            <!-- Save Confirmation Message -->
+            <div class="save-message hidden" id="saveMessage"></div>
+        </div>
+
+        <!-- ===== RESULTS PAGE ===== -->
+        <div class="page" id="page-results">
+            <h1>Results</h1>
+            <div id="resultsContent"></div>
+            <div id="clearSection" style="display:none;">
+                <hr style="border:none;height:1px;background:var(--tm-gray-light);margin:30px 0;">
+                <div class="clear-controls">
+                    <div class="input-group">
+                        <label>Clear Category</label>
+                        <select id="clearCatSelect">
+                            <option value="Table Topics">Table Topics</option>
+                            <option value="Evaluation">Evaluation</option>
+                            <option value="Speech">Speech</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="clearCategory()">Clear Category</button>
+                    <button class="btn btn-reset" onclick="clearAll()">Clear All</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ABOUT PAGE ===== -->
+        <div class="page" id="page-about" style="max-width:700px;">
+            <h1>About</h1>
+            <div class="about-card">
+                <h3>Toastmasters Timer</h3>
+                <p>A timer app for Toastmasters meetings to track speech times with green/yellow/red indicators. Supports dual-window mode for projection displays.</p>
+            </div>
+            <div class="about-card author-card">
+                <h3>Made by</h3>
+                <div style="font-size:28px;font-weight:700;color:var(--tm-burgundy);margin-bottom:10px;">Soumyajit Ray</div>
+                <p style="font-style:italic;margin-bottom:25px!important;">Punk rocker who spends most of his time in the virtual worlds of video games and sci-fi novels. Passionate techie.<br>Member and Treasurer at UEM Kolkata Toastmasters Club<br>Student of University of Engineering and Management, Kolkata (Newtown)</p>
+            <div class="about-card">
+                <h3>Connect</h3>
+                <div class="social-links">
+                    <a href="https://github.com/50umy4j1t" target="_blank" rel="noopener noreferrer" class="btn btn-link"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:6px;"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>GitHub</a>
+                    <a href="https://www.linkedin.com/in/soumya532/" target="_blank" rel="noopener noreferrer" class="btn btn-link"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="vertical-align:middle;margin-right:6px;"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
