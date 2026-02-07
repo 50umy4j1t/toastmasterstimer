@@ -1,67 +1,38 @@
 # Toastmasters Timer
 
-A simple Streamlit-based timer app for Toastmasters meetings. Track speech times with green/yellow/red indicators and save results by category.
+## Overview  
+This project includes implementations for a Timer used during Toastmasters events. It contains versions in both Python and HTML/JavaScript.
 
-## Features
-
-- **Presets** for common speech types:
-  - Table Topics (1-2 min)
-  - Evaluation (2-3 min)
-  - Speech (5-7 min)
-  - Custom (user-defined)
-- **Traffic light indicators** (green/yellow/red images)
-- **Disqualification tracking** (red + 30 seconds)
-- **Save times** by speaker name
-- **Results page** with categorized tables and status emojis
-- **Customizable time thresholds**
-
-## Installation
-
-1. Make sure you have Python 3.8+ installed
-
-2. Install Streamlit:
+## Python Version  
+You can run the Python version of the timer using the following command:
+```bash
+python timer.py
+```
+### Deployment  
+1. Clone the repository:  
+   ```bash  
+   git clone https://github.com/50umy4j1t/toastmasterstimer.git
+   ```  
+2. Install the required packages:
    ```bash
-   pip install streamlit
+   pip install -r requirements.txt
    ```
+3. Run the application.
 
-3. Clone or download this repository
+## HTML/JavaScript Version  
+The HTML/JavaScript version can be run directly in your web browser. Just open `index.html` to use the timer.
+### Deployment  
+1. Clone the repository:  
+   ```bash  
+   git clone https://github.com/50umy4j1t/toastmasterstimer.git
+   ```  
+2. Open `index.html` in a web browser.
 
-## Usage
+## Usage Instructions  
+The timer starts counting up from 0. You can use the buttons to control the timer:
+- Start: Begins the timer.
+- Stop: Halts the timer.
+- Reset: Clears the timer back to 0.
 
-1. Navigate to the project directory:
-   ```bash
-   cd toastmasterstimer
-   ```
-
-2. Run the app:
-   ```bash
-   streamlit run app.py
-   ```
-
-3. Open your browser to the URL shown (usually http://localhost:8501)
-
-## How to Use
-
-1. Select a **preset** from the sidebar (Table Topics, Evaluation, Speech, or Custom)
-2. Adjust time thresholds if needed (Green/Yellow/Red/Disqualify)
-3. Enter the **speaker's name**
-4. Click **START** to begin timing
-5. Click **PAUSE** when the speaker finishes
-6. Click **SAVE TIME** to record the result
-7. View all saved times on the **Results** page
-
-## Files
-
-- `app.py` - Main application
-- `green.jpg` - Green light image
-- `yellow.jpg` - Yellow light image
-- `red.jpg` - Red light image
-
-## Author
-
-**Soumyajit Ray**
-
-- GitHub: https://github.com/50umy4j1t
-- LinkedIn: https://www.linkedin.com/in/soumya532/
-
-UEM Kolkata Toastmasters Club
+## Contribution  
+Feel free to fork the repository and submit pull requests for changes or enhancements!
