@@ -32,6 +32,7 @@ PRESET_TO_CATEGORY = {
 if "running" not in st.session_state:
     st.session_state.running = False
     st.session_state.elapsed = 0
+    st.session_state.hide_timer = False
 if "saved_times" not in st.session_state:
     # Store as {category: {name: seconds}}
     st.session_state.saved_times = {
@@ -108,6 +109,10 @@ def timer_page():
     else:
         save_category = PRESET_TO_CATEGORY[preset]
 
+    # Hide timer checkbox
+    hide_timer = st.checkbox("Hide Timer", value=st.session_state.hide_timer, key="hide_timer_cb")
+    st.session_state.hide_timer = hide_timer
+
     # Control buttons
     btn1, btn2, btn3 = st.columns(3)
     with btn1:
@@ -125,7 +130,10 @@ def timer_page():
     # Display timer
     elapsed = st.session_state.elapsed
     mm, ss = elapsed // 60, elapsed % 60
-    st.markdown(f"<h1 style='text-align:center; font-size:5rem;'>{mm:02d}:{ss:02d}</h1>", unsafe_allow_html=True)
+    if st.session_state.hide_timer:
+        st.markdown(f"<h1 style='text-align:center; font-size:5rem; color: transparent;'>--:--</h1>", unsafe_allow_html=True)
+    else:
+        st.markdown(f"<h1 style='text-align:center; font-size:5rem;'>{mm:02d}:{ss:02d}</h1>", unsafe_allow_html=True)
 
     # Save button (only when paused and has time)
     if not st.session_state.running and st.session_state.elapsed > 0:
